@@ -13,6 +13,10 @@ pub enum ComponentType {
     Button = 2,
     SelectMenu = 3,
     InputText = 4,
+    UserSelect = 5,
+    RoleSelect = 6,
+    MentionableSelect = 7,
+    ChannelSelect = 8,
     Unknown = !0,
 }
 
@@ -20,7 +24,11 @@ enum_number!(ComponentType {
     ActionRow,
     Button,
     SelectMenu,
-    InputText
+    InputText,
+    UserSelect,
+    RoleSelect,
+    MentionableSelect,
+    ChannelSelect
 });
 
 /// An action row.
@@ -57,7 +65,11 @@ impl<'de> Deserialize<'de> for ActionRowComponent {
             ComponentType::Button => from_value::<Button>(Value::from(map))
                 .map(ActionRowComponent::Button)
                 .map_err(DeError::custom),
-            ComponentType::SelectMenu => from_value::<SelectMenu>(Value::from(map))
+            ComponentType::SelectMenu
+            | ComponentType::UserSelect
+            | ComponentType::RoleSelect
+            | ComponentType::MentionableSelect
+            | ComponentType::ChannelSelect => from_value::<SelectMenu>(Value::from(map))
                 .map(ActionRowComponent::SelectMenu)
                 .map_err(DeError::custom),
             ComponentType::InputText => from_value::<InputText>(Value::from(map))
